@@ -53,8 +53,8 @@ const About = () => {
 
             <h4>Impact</h4>
             <p>
-              CleanStream VA helps protect nearly 1 million people by providing early warnings 
-              about unsafe water conditions, supporting recreational users, and assisting local 
+              CleanStream VA helps protect Virginia's 8.6 million residents by providing early warnings
+              about unsafe water conditions, supporting recreational users, and assisting local
               governments in managing water quality across Virginia's waterways.
             </p>
           </div>
@@ -63,7 +63,7 @@ const About = () => {
             <div className="stat-card">
               <i className="fas fa-shield-alt"></i>
               <h3>Public Health</h3>
-              <p>Protecting nearly 1 million people from unsafe water conditions</p>
+              <p>Protecting Virginia's 8.6 million residents from unsafe water conditions</p>
             </div>
             <div className="stat-card">
               <i className="fas fa-users"></i>
@@ -78,7 +78,7 @@ const About = () => {
             <div className="stat-card">
               <i className="fas fa-map-marked-alt"></i>
               <h3>Coverage</h3>
-              <p>Monitoring 47+ water bodies across Virginia</p>
+              <p>Monitoring 150+ major water bodies across Virginia</p>
             </div>
             <div className="stat-card">
               <i className="fas fa-mobile-alt"></i>
