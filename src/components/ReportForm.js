@@ -25,6 +25,13 @@ const ReportForm = ({ onReportSubmit }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Validation: require location, waterCondition, description
+    if (!formData.location || !formData.waterCondition || !formData.description) {
+      alert('Please fill in all required fields: location, water condition, and description.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       // Determine status based on water condition
       const getStatusFromCondition = (condition) => {
@@ -44,7 +51,8 @@ const ReportForm = ({ onReportSubmit }) => {
         smell: formData.smell,
         description: formData.description,
         contact: formData.contact,
-        status: getStatusFromCondition(formData.waterCondition)
+        status: getStatusFromCondition(formData.waterCondition),
+        timestamp: Date.now() // Add timestamp for 24h filtering
       };
 
       // Add report to context

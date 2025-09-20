@@ -152,35 +152,34 @@ export const ReportProvider = ({ children }) => {
     }
   };
 
+  // Helper: get verification status for a location
   const getVerificationStatus = (location) => {
-    const locationReports = state.reports.filter(report => report.location === location);
-    const recentReports = locationReports.filter(report => {
-      const reportTime = new Date(report.timestamp);
-      const now = new Date();
-      const hoursDiff = (now - reportTime) / (1000 * 60 * 60);
-      return hoursDiff <= VERIFICATION_WINDOW;
-    });
-
-    const statusCounts = recentReports.reduce((acc, report) => {
+    const now = Date.now();
+    // Only consider reports from the last 24 hours
+    const locationReports = state.reports.filter(r => r.location === location && (now - r.timestamp) <= VERIFICATION_WINDOW * 60 * 60 * 1000);
+    const statusCounts = locationReports.reduce((acc, report) => {
       acc[report.status] = (acc[report.status] || 0) + 1;
       return acc;
     }, {});
-
-    const totalReports = Object.values(statusCounts).reduce((sum, count) => sum + count, 0);
-    const mostCommonStatus = Object.keys(statusCounts).reduce((a, b) => 
-      statusCounts[a] > statusCounts[b] ? a : b, 'safe'
-    );
-
+    // Find most common status
+    let mostCommonStatus = null;
+    let maxCount = 0;
+    Object.keys(statusCounts).forEach(status => {
+      if (statusCounts[status] > maxCount) {
+        mostCommonStatus = status;
+        maxCount = statusCounts[status];
+      }
+    });
     const threshold = VERIFICATION_THRESHOLDS[mostCommonStatus] || 3;
-    const isVerified = statusCounts[mostCommonStatus] >= threshold;
-
+    const totalReports = maxCount;
+    const neededReports = Math.max(threshold - totalReports, 0);
+    const isVerified = totalReports >= threshold;
     return {
-      status: state.verifiedStatuses[location] || 'safe',
-      isVerified,
-      reportCount: totalReports,
-      statusBreakdown: statusCounts,
+      mostCommonStatus,
+      totalReports,
+      neededReports,
       threshold,
-      recentReports: recentReports.length
+      isVerified
     };
   };
 
