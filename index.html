@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanStream VA - Water Safety & Algal Bloom Alerts</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-water"></i>
+                <span>CleanStream VA</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#map">Water Map</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#report">Report</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Protecting Virginia's Waterways</h1>
+            <p>Real-time monitoring and predictive alerts for harmful algal blooms and water safety across Virginia's lakes, rivers, and reservoirs.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('map')">View Water Map</button>
+                <button class="btn btn-secondary" onclick="scrollToSection('report')">Report Water Issue</button>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <h3>47</h3>
+                <p>Water Bodies Monitored</p>
+            </div>
+            <div class="stat">
+                <h3>1.2M</h3>
+                <p>People Protected</p>
+            </div>
+            <div class="stat">
+                <h3>24/7</h3>
+                <p>Real-time Monitoring</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Water Map Section -->
+    <section id="map" class="map-section">
+        <div class="container">
+            <h2>Virginia Water Quality Map</h2>
+            <p>Interactive map showing current water safety status across Virginia's major waterways</p>
+            <div class="map-container">
+                <div id="waterMap"></div>
+                <div class="map-legend">
+                    <h4>Water Safety Status</h4>
+                    <div class="legend-item">
+                        <div class="status-indicator safe"></div>
+                        <span>Safe</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="status-indicator caution"></div>
+                        <span>Caution</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="status-indicator warning"></div>
+                        <span>Warning</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="status-indicator unsafe"></div>
+                        <span>Unsafe</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard-section">
+        <div class="container">
+            <h2>Water Quality Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Current Alerts</h3>
+                    <div class="alert-list">
+                        <div class="alert-item warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Lake Anna - North Anna Branch</strong>
+                                <p>Elevated algae levels detected. Avoid swimming.</p>
+                            </div>
+                        </div>
+                        <div class="alert-item caution">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Chickahominy River</strong>
+                                <p>Moderate risk of algal bloom. Monitor conditions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3>Recent Reports</h3>
+                    <div class="reports-list">
+                        <div class="report-item">
+                            <div class="report-header">
+                                <span class="report-location">Occoquan Reservoir</span>
+                                <span class="report-time">2 hours ago</span>
+                            </div>
+                            <p>Clear water, no visible algae</p>
+                            <div class="report-status safe">Safe</div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-header">
+                                <span class="report-location">James River</span>
+                                <span class="report-time">4 hours ago</span>
+                            </div>
+                            <p>Greenish tint observed near shore</p>
+                            <div class="report-status caution">Caution</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Weather Impact</h3>
+                    <div class="weather-info">
+                        <div class="weather-item">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span>Temperature: 78°F</span>
+                        </div>
+                        <div class="weather-item">
+                            <i class="fas fa-cloud-rain"></i>
+                            <span>Rainfall: 0.2" (24h)</span>
+                        </div>
+                        <div class="weather-item">
+                            <i class="fas fa-wind"></i>
+                            <span>Wind: 5 mph SW</span>
+                        </div>
+                    </div>
+                    <div class="bloom-risk">
+                        <h4>Bloom Risk Level</h4>
+                        <div class="risk-meter">
+                            <div class="risk-bar">
+                                <div class="risk-fill medium"></div>
+                            </div>
+                            <span>Medium Risk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Report Section -->
+    <section id="report" class="report-section">
+        <div class="container">
+            <h2>Report Water Quality Issues</h2>
+            <p>Help protect Virginia's waterways by reporting water quality observations</p>
+            
+            <form class="report-form" id="reportForm">
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <input type="text" id="location" name="location" placeholder="Enter water body name or address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="waterCondition">Water Condition *</label>
+                    <select id="waterCondition" name="waterCondition" required>
+                        <option value="">Select condition</option>
+                        <option value="clear">Clear/Normal</option>
+                        <option value="greenish">Greenish tint</option>
+                        <option value="algae">Visible algae</option>
+                        <option value="foam">Foam or scum</option>
+                        <option value="discolored">Discolored water</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="smell">Odor</label>
+                    <select id="smell" name="smell">
+                        <option value="">No unusual odor</option>
+                        <option value="earthy">Earthy/musty</option>
+                        <option value="fishy">Fishy</option>
+                        <option value="chemical">Chemical</option>
+                        <option value="rotten">Rotten eggs</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Additional Details</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Describe what you observed..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="photo">Photo (optional)</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">Contact Email (optional)</label>
+                    <input type="email" id="contact" name="contact" placeholder="your@email.com">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Report</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2>About CleanStream VA</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Protecting Virginia's Waterways</h3>
+                    <p>CleanStream VA is a citizen-science platform that combines real-time monitoring, predictive modeling, and community reporting to protect Virginia's waterways from harmful algal blooms and water quality issues.</p>
+                    
+                    <h4>Our Mission</h4>
+                    <p>To provide early warning systems and real-time data to help protect public health, support recreational users, and assist local governments in managing water quality across Virginia's lakes, rivers, and reservoirs.</p>
+                    
+                    <h4>How It Works</h4>
+                    <ul>
+                        <li><strong>Data Integration:</strong> We combine satellite imagery, weather data, and state agency reports</li>
+                        <li><strong>Predictive Modeling:</strong> Machine learning algorithms predict bloom risk 3-7 days in advance</li>
+                        <li><strong>Community Reporting:</strong> Citizens can report water conditions with photos and GPS</li>
+                        <li><strong>Real-time Alerts:</strong> SMS and email notifications for specific water bodies</li>
+                    </ul>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Public Health</h3>
+                        <p>Protecting nearly 1 million people from unsafe water conditions</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Community</h3>
+                        <p>Empowering citizens to participate in water quality monitoring</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Prediction</h3>
+                        <p>Advanced modeling for early warning and prevention</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CleanStream VA</h3>
+                    <p>Protecting Virginia's waterways through technology and community engagement.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#map">Water Map</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#report">Report Issue</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Water Safety Guidelines</a></li>
+                        <li><a href="#">Algal Bloom Information</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CleanStream VA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
