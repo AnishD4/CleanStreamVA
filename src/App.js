@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { ReportProvider } from './context/ReportContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -44,58 +45,60 @@ function App() {
   };
 
   return (
-    <ReportProvider>
-      <Router>
-        <div className="App">
-          <Navbar 
-            onLocationAlert={handleLocationAlert}
-            onSearchDirections={handleSearchDirections}
-          />
-          <main>
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <Hero />
-                  <WaterMap />
-                  <Dashboard />
-                  <ReportForm onReportSubmit={addNotification} />
-                  <About />
-                </>
-              } />
-              <Route path="/map" element={<WaterMap />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/information" element={<Information />} />
-              <Route path="/cleaning-parties" element={<CleaningParties />} />
-              <Route path="/report" element={<ReportForm onReportSubmit={addNotification} />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
-          </main>
-          <Footer />
-          
-          {/* Notification Container */}
-          <div className="notification-container">
-            {notifications.map(notification => (
-              <Notification
-                key={notification.id}
-                message={notification.message}
-                type={notification.type}
-                onClose={() => removeNotification(notification.id)}
-              />
-            ))}
+    <AuthProvider>
+      <ReportProvider>
+        <Router>
+          <div className="App">
+            <Navbar
+              onLocationAlert={handleLocationAlert}
+              onSearchDirections={handleSearchDirections}
+            />
+            <main>
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    <Hero />
+                    <WaterMap />
+                    <Dashboard />
+                    <ReportForm onReportSubmit={addNotification} />
+                    <About />
+                  </>
+                } />
+                <Route path="/map" element={<WaterMap />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/information" element={<Information />} />
+                <Route path="/cleaning-parties" element={<CleaningParties />} />
+                <Route path="/report" element={<ReportForm onReportSubmit={addNotification} />} />
+                <Route path="/about" element={<About />} />
+              </Routes>
+            </main>
+            <Footer />
+
+            {/* Notification Container */}
+            <div className="notification-container">
+              {notifications.map(notification => (
+                <Notification
+                  key={notification.id}
+                  message={notification.message}
+                  type={notification.type}
+                  onClose={() => removeNotification(notification.id)}
+                />
+              ))}
+            </div>
+
+            {/* Location Alert Modal */}
+            {showLocationAlert && (
+              <LocationAlert onClose={() => setShowLocationAlert(false)} />
+            )}
+
+            {/* Search and Directions Modal */}
+            {showSearchDirections && (
+              <SearchAndDirections onClose={() => setShowSearchDirections(false)} />
+            )}
           </div>
-
-          {/* Location Alert Modal */}
-          {showLocationAlert && (
-            <LocationAlert onClose={() => setShowLocationAlert(false)} />
-          )}
-
-          {/* Search and Directions Modal */}
-          {showSearchDirections && (
-            <SearchAndDirections onClose={() => setShowSearchDirections(false)} />
-          )}
-        </div>
-      </Router>
-    </ReportProvider>
+        </Router>
+      </ReportProvider>
+    </AuthProvider>
   );
 }
 
