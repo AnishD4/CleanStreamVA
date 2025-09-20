@@ -1,6 +1,21 @@
 import React, { useState } from 'react';
 import { useReports } from '../context/ReportContext';
 import VerificationInfo from './VerificationInfo';
+import axios from 'axios';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+const defaultPosition = [37.5407, -78.6569]; // Virginia center
+
+function LocationPicker({ position, setPosition }) {
+  useMapEvents({
+    click(e) {
+      setPosition([e.latlng.lat, e.latlng.lng]);
+    }
+  });
+  return position ? <Marker position={position} /> : null;
+}
 
 const ReportForm = ({ onReportSubmit }) => {
   const { addReport, getVerificationStatus } = useReports();
@@ -12,28 +27,25 @@ const ReportForm = ({ onReportSubmit }) => {
     contact: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [position, setPosition] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Validation: require location, waterCondition, description
-    if (!formData.location || !formData.waterCondition || !formData.description) {
-      alert('Please fill in all required fields: location, water condition, and description.');
+    setErrorMsg("");
+    // Validation: require location, waterCondition, description, position
+    if (!formData.location || !formData.waterCondition || !formData.description || !position) {
+      setErrorMsg('Please fill in all required fields and pick a location on the map.');
       setIsSubmitting(false);
       return;
     }
-
     try {
-      // Determine status based on water condition
       const getStatusFromCondition = (condition) => {
         switch (condition) {
           case 'clear': return 'safe';
@@ -44,51 +56,27 @@ const ReportForm = ({ onReportSubmit }) => {
           default: return 'safe';
         }
       };
-
+      // Only include optional fields if filled
       const reportData = {
         location: formData.location,
+        coords: { lat: position[0], lon: position[1] },
         waterCondition: formData.waterCondition,
-        smell: formData.smell,
         description: formData.description,
-        contact: formData.contact,
         status: getStatusFromCondition(formData.waterCondition),
-        timestamp: Date.now() // Add timestamp for 24h filtering
+        timestamp: Date.now()
       };
-
-      // Add report to context
-      addReport(reportData);
-
-      // Get verification status for this location
-      const verificationStatus = getVerificationStatus(formData.location);
-      
-      console.log('Report submitted:', reportData);
-      console.log('Verification status:', verificationStatus);
-
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Show success notification with verification info
-      const message = verificationStatus.isVerified 
-        ? `Thank you for your report! Status for ${formData.location} has been verified and updated.`
-        : `Thank you for your report! We need ${verificationStatus.neededReports - verificationStatus.totalReports} more reports to verify the status for ${formData.location}.`;
-      
-      onReportSubmit(message, 'success');
-
-      // Reset form
-      setFormData({
-        location: '',
-        waterCondition: '',
-        smell: '',
-        description: '',
-        contact: ''
-      });
-
-    } catch (error) {
-      console.error('Error submitting report:', error);
-      onReportSubmit('There was an error submitting your report. Please try again.', 'error');
-    } finally {
-      setIsSubmitting(false);
+      if (formData.smell) reportData.smell = formData.smell;
+      if (formData.contact) reportData.contact = formData.contact;
+      // Photo upload is not implemented, so skip
+      await addReport(reportData);
+      if (onReportSubmit) onReportSubmit('Report submitted!', 'success');
+      setFormData({ location: '', waterCondition: '', smell: '', description: '', contact: '' });
+      setPosition(null);
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to submit report.');
+      if (onReportSubmit) onReportSubmit(err.message || 'Failed to submit report.', 'error');
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -96,12 +84,11 @@ const ReportForm = ({ onReportSubmit }) => {
       <div className="container">
         <h2>Report Water Quality Issues</h2>
         <p>Help protect Virginia's waterways by reporting water quality observations</p>
-        
+        {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
         <VerificationInfo />
-        
         <form className="report-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="location">Location *</label>
+            <label htmlFor="location">Location Name *</label>
             <input
               type="text"
               id="location"
@@ -112,7 +99,16 @@ const ReportForm = ({ onReportSubmit }) => {
               required
             />
           </div>
-          
+          <div className="form-group">
+            <label>Pick Location on Map *</label>
+            <div style={{ height: '300px', marginBottom: '12px' }}>
+              <MapContainer center={defaultPosition} zoom={7} style={{ height: '100%', width: '100%' }}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <LocationPicker position={position} setPosition={setPosition} />
+              </MapContainer>
+            </div>
+            {position && <div>Selected: {position[0].toFixed(5)}, {position[1].toFixed(5)}</div>}
+          </div>
           <div className="form-group">
             <label htmlFor="waterCondition">Water Condition *</label>
             <select
@@ -130,7 +126,6 @@ const ReportForm = ({ onReportSubmit }) => {
               <option value="discolored">Discolored water</option>
             </select>
           </div>
-          
           <div className="form-group">
             <label htmlFor="smell">Odor</label>
             <select
@@ -146,7 +141,6 @@ const ReportForm = ({ onReportSubmit }) => {
               <option value="rotten">Rotten eggs</option>
             </select>
           </div>
-          
           <div className="form-group">
             <label htmlFor="description">Additional Details</label>
             <textarea
@@ -158,7 +152,6 @@ const ReportForm = ({ onReportSubmit }) => {
               placeholder="Describe what you observed..."
             />
           </div>
-          
           <div className="form-group">
             <label htmlFor="photo">Photo (optional)</label>
             <input
@@ -172,7 +165,6 @@ const ReportForm = ({ onReportSubmit }) => {
               }}
             />
           </div>
-          
           <div className="form-group">
             <label htmlFor="contact">Contact Email (optional)</label>
             <input
@@ -184,8 +176,7 @@ const ReportForm = ({ onReportSubmit }) => {
               placeholder="your@email.com"
             />
           </div>
-          
-          <button 
+          <button
             type="submit" 
             className="btn btn-primary"
             disabled={isSubmitting}

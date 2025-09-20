@@ -16,6 +16,7 @@ import Information from './components/Information';
 import CleaningParties from './components/CleaningParties';
 import FirebaseTest from './components/FirebaseTest';
 import CommunityEvents from './components/CommunityEvents';
+import VerifiedLocationsTable from './components/VerifiedLocationsTable';
 import './App.css';
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
                     <Dashboard />
                     <ReportForm onReportSubmit={addNotification} />
                     <About />
+                    <VerifiedLocationsTable />
                   </>
                 } />
                 <Route path="/map" element={<WaterMap />} />

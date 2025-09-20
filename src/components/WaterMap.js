@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { useReports } from '../context/ReportContext';
+import { useEffect as useReactEffect, useState as useReactState } from 'react';
+import { db } from '../firebase/config';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 // Full list of water sites
 const additionalSites = [
@@ -123,11 +126,23 @@ const statusIcons = {
 };
 
 const WaterMap = () => {
-  const { verifiedStatuses } = useReports();
+  const { reports } = useReports();
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const [search, setSearch] = useState("");
   const [filteredSites, setFilteredSites] = useState(additionalSites);
+  const [verifiedLocations, setVerifiedLocations] = useReactState([]);
+
+  // Fetch verified locations from Firestore
+  useReactEffect(() => {
+    const unsub = onSnapshot(collection(db, 'verifiedLocations'), (snapshot) => {
+      setVerifiedLocations(snapshot.docs.map(doc => doc.data()));
+    });
+    return () => unsub();
+  }, []);
+
+  // Filter reports to last 24 hours
+  const recentReports = reports.filter(r => Date.now() - r.timestamp <= 24 * 60 * 60 * 1000 && r.coords);
 
   useEffect(() => {
     // Filter sites by search
@@ -156,12 +171,11 @@ const WaterMap = () => {
     map.eachLayer(layer => {
       if (layer instanceof L.CircleMarker) map.removeLayer(layer);
     });
-    console.log('Rendering markers for sites:', filteredSites.length, filteredSites);
+    // Show static sites
     filteredSites.forEach(site => {
-      const status = verifiedStatuses[site.name] || site.status;
       const marker = L.circleMarker(site.coords, {
         radius: 12,
-        fillColor: statusColors[status],
+        fillColor: statusColors[site.status],
         color: '#fff',
         weight: 2,
         opacity: 1,
@@ -170,18 +184,53 @@ const WaterMap = () => {
       marker.bindPopup(`
         <div style="min-width: 200px;">
           <h3 style="margin: 0 0 10px 0; color: #2c3e50;">${site.name}</h3>
-          <p style="margin: 0 0 10px 0; color: #666;">${site.description || defaultDescription}</p>
           <div style="display: flex; align-items: center; gap: 5px;">
-            <i class="${statusIcons[status]}" style="color: ${statusColors[status]};"></i>
-            <span style="text-transform: capitalize; font-weight: 600; color: ${statusColors[status]};">${status}</span>
+            <i class="${statusIcons[site.status]}" style="color: ${statusColors[site.status]};"></i>
+            <span style="text-transform: capitalize; font-weight: 600; color: ${statusColors[site.status]};">${site.status}</span>
           </div>
         </div>
       `);
-      marker.on('click', function() {
-        console.log(`Clicked on ${site.name}`);
-      });
     });
-  }, [filteredSites, verifiedStatuses]);
+    // Show recent reports
+    recentReports.forEach(report => {
+      const marker = L.circleMarker([report.coords.lat, report.coords.lon], {
+        radius: 14,
+        fillColor: statusColors[report.status] || '#3498db',
+        color: '#222',
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.9
+      }).addTo(map);
+      marker.bindPopup(`
+        <div style="min-width: 220px;">
+          <h3 style="margin: 0 0 10px 0; color: #2c3e50;">${report.location}</h3>
+          <p style="margin: 0 0 10px 0; color: #666;">${report.description || 'No description provided.'}</p>
+          <div>Status: <span style="color: ${statusColors[report.status]}; font-weight: bold;">${report.status}</span></div>
+          <div>Reported: ${new Date(report.timestamp).toLocaleString()}</div>
+        </div>
+      `);
+    });
+    // Show verified locations as special markers
+    verifiedLocations.forEach(loc => {
+      if (loc.coords) {
+        const marker = L.circleMarker([loc.coords.lat, loc.coords.lon], {
+          radius: 16,
+          fillColor: '#2c3e50', // dark blue for verified
+          color: '#fff',
+          weight: 3,
+          opacity: 1,
+          fillOpacity: 1
+        }).addTo(map);
+        marker.bindPopup(`
+          <div style="min-width: 220px;">
+            <h3 style="margin: 0 0 10px 0; color: #2c3e50;">${loc.location} (Verified)</h3>
+            <div>Status: <span style="color: #2c3e50; font-weight: bold;">${loc.status}</span></div>
+            <div>Verified: ${new Date(loc.verifiedAt).toLocaleString()}</div>
+          </div>
+        `);
+      }
+    });
+  }, [filteredSites, reports, verifiedLocations]);
 
   return (
     <section className="map-section">

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 import { addWaterReport, getAllReports, subscribeToReports } from '../services/firebaseService';
 import { useAuth } from './AuthContext';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
 const ReportContext = createContext();
 
@@ -129,21 +131,38 @@ export const ReportProvider = ({ children }) => {
     }
   };
 
+  // Haversine formula for distance in miles
+  function getDistanceMiles(lat1, lon1, lat2, lon2) {
+    const toRad = x => x * Math.PI / 180;
+    const R = 3958.8; // Earth radius in miles
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }
+
   const addReport = async (reportData) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-
-      // Add user information to the report
+      // Add user information to the report if available
       const reportWithUser = {
         ...reportData,
-        userId: currentUser?.uid,
-        userEmail: currentUser?.email,
-        isAnonymous: currentUser?.isAnonymous || false
+        ...(currentUser && currentUser.uid ? {
+          userId: currentUser.uid,
+          userEmail: currentUser.email,
+          isAnonymous: currentUser.isAnonymous || false
+        } : {}),
+        timestamp: Timestamp.fromDate(new Date()), // Use Firestore Timestamp
+        verified: false,
+        verificationCount: 0,
+        createdAt: Timestamp.fromDate(new Date())
       };
-
+      // Use addWaterReport (which writes to waterReports collection)
       const newReport = await addWaterReport(reportWithUser);
       dispatch({ type: 'ADD_REPORT_SUCCESS', payload: newReport });
-
       return newReport;
     } catch (error) {
       console.error('Error adding report:', error);
@@ -151,6 +170,45 @@ export const ReportProvider = ({ children }) => {
       throw error;
     }
   };
+
+  // Save verified location to Firestore and nearby locations within radius
+  const saveVerifiedLocationWithRadius = async (location, coords, status, allReports, radiusMiles = 5) => {
+    try {
+      // Save the verified location itself
+      await addDoc(collection(db, 'verifiedLocations'), {
+        location,
+        coords,
+        status,
+        verifiedAt: Date.now()
+      });
+      // Find and save all other locations within radius
+      for (const report of allReports) {
+        if (report.coords && (report.location !== location)) {
+          const dist = getDistanceMiles(coords.lat, coords.lon, report.coords.lat, report.coords.lon);
+          if (dist <= radiusMiles) {
+            await addDoc(collection(db, 'verifiedLocations'), {
+              location: report.location,
+              coords: report.coords,
+              status,
+              verifiedAt: Date.now()
+            });
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Error saving verified location(s):', err);
+    }
+  };
+
+  // When verification status changes, save verified locations and nearby ones
+  useEffect(() => {
+    state.reports.forEach(report => {
+      const verification = getVerificationStatus(report.location);
+      if (verification.isVerified) {
+        saveVerifiedLocationWithRadius(report.location, report.coords, verification.mostCommonStatus, state.reports, 5); // 5 mile radius
+      }
+    });
+  }, [state.reports]);
 
   // Helper: get verification status for a location
   const getVerificationStatus = (location) => {
@@ -171,7 +229,7 @@ export const ReportProvider = ({ children }) => {
       }
     });
     const threshold = VERIFICATION_THRESHOLDS[mostCommonStatus] || 3;
-    const totalReports = maxCount;
+    const totalReports = Number.isFinite(maxCount) ? maxCount : 0;
     const neededReports = Math.max(threshold - totalReports, 0);
     const isVerified = totalReports >= threshold;
     return {
@@ -181,6 +239,20 @@ export const ReportProvider = ({ children }) => {
       threshold,
       isVerified
     };
+  };
+
+  // Save verified location to Firestore
+  const saveVerifiedLocation = async (location, coords, status) => {
+    try {
+      await addDoc(collection(db, 'verifiedLocations'), {
+        location,
+        coords,
+        status,
+        verifiedAt: Date.now()
+      });
+    } catch (err) {
+      console.error('Error saving verified location:', err);
+    }
   };
 
   const getReportsByLocation = (location) => {

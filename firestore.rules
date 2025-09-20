@@ -6,14 +6,13 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Water reports - anyone can read, authenticated users can write
+    // Water reports - anyone can read and create
     match /waterReports/{reportId} {
       // Anyone can read reports (for public safety)
       allow read: if true;
 
-      // Only authenticated users can create reports
-      allow create: if request.auth != null
-        && request.auth.uid == resource.data.userId;
+      // Anyone can create reports (anonymous/public allowed)
+      allow create: if true;
 
       // Users can update their own reports within 1 hour
       allow update: if request.auth != null
@@ -38,4 +37,3 @@ service cloud.firestore {
     }
   }
 }
-
