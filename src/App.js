@@ -15,6 +15,7 @@ import SearchAndDirections from './components/SearchAndDirections';
 import Information from './components/Information';
 import CleaningParties from './components/CleaningParties';
 import FirebaseTest from './components/FirebaseTest';
+import CommunityEvents from './components/CommunityEvents';
 import './App.css';
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
                 <Route path="/report" element={<ReportForm onReportSubmit={addNotification} />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/firebase-test" element={<FirebaseTest />} />
+                <Route path="/community-events" element={<CommunityEvents />} />
               </Routes>
             </main>
             <Footer />
