@@ -86,8 +86,15 @@ const Dashboard = () => {
               <div className="alert-item caution">
                 <i className="fas fa-info-circle"></i>
                 <div>
-                  <strong>Chickahominy River</strong>
+                  <strong>James River - Richmond Area</strong>
                   <p>Moderate risk of algal bloom. Monitor conditions.</p>
+                </div>
+              </div>
+              <div className="alert-item info">
+                <i className="fas fa-check-circle"></i>
+                <div>
+                  <strong>Shenandoah River</strong>
+                  <p>Water conditions normal. Safe for recreation.</p>
                 </div>
               </div>
             </div>

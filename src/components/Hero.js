@@ -4,13 +4,6 @@ import { useNavigate } from 'react-router-dom';
 const Hero = () => {
   const navigate = useNavigate();
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const handleMapClick = () => {
     navigate('/map');
   };
@@ -39,12 +32,12 @@ const Hero = () => {
       
       <div className="hero-stats">
         <div className="stat">
-          <h3>25625</h3>
-          <p>Water Bodies Monitored</p>
+          <h3>150+</h3>
+          <p>Virginia Water Bodies</p>
         </div>
         <div className="stat">
-          <h3>67.67 M</h3>
-          <p>People Protected</p>
+          <h3>8.8 M</h3>
+          <p>Virginians being kept informed</p>
         </div>
         <div className="stat">
           <h3>24/7</h3>
