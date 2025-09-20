@@ -39,11 +39,11 @@ const Hero = () => {
       
       <div className="hero-stats">
         <div className="stat">
-          <h3>47</h3>
+          <h3>25625</h3>
           <p>Water Bodies Monitored</p>
         </div>
         <div className="stat">
-          <h3>1.2M</h3>
+          <h3>67.67 M</h3>
           <p>People Protected</p>
         </div>
         <div className="stat">
