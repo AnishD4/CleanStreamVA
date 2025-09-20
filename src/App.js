@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { ReportProvider } from './context/ReportContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -15,10 +15,10 @@ import SearchAndDirections from './components/SearchAndDirections';
 import Information from './components/Information';
 import CleaningParties from './components/CleaningParties';
 import FirebaseTest from './components/FirebaseTest';
+import CommunityEvents from './components/CommunityEvents';
 import './App.css';
 
-function AppContent() {
-  const { loading, error } = useAuth();
+function App() {
   const [notifications, setNotifications] = useState([]);
   const [showLocationAlert, setShowLocationAlert] = useState(false);
   const [showSearchDirections, setShowSearchDirections] = useState(false);
@@ -46,83 +46,61 @@ function AppContent() {
     setShowSearchDirections(true);
   };
 
-  if (loading) {
-    return (
-      <div className="App">
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          flexDirection: 'column'
-        }}>
-          <div>Loading...</div>
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <Router>
-      <div className="App">
-        <Navbar
-          onLocationAlert={handleLocationAlert}
-          onSearchDirections={handleSearchDirections}
-        />
-        <main>
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Hero />
-                <WaterMap />
-                <Dashboard />
-                <ReportForm onReportSubmit={addNotification} />
-                <About />
-              </>
-            } />
-            <Route path="/map" element={<WaterMap />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/information" element={<Information />} />
-            <Route path="/cleaning-parties" element={<CleaningParties />} />
-            <Route path="/report" element={<ReportForm onReportSubmit={addNotification} />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/firebase-test" element={<FirebaseTest />} />
-          </Routes>
-        </main>
-        <Footer />
-
-        {/* Notification Container */}
-        <div className="notification-container">
-          {notifications.map(notification => (
-            <Notification
-              key={notification.id}
-              message={notification.message}
-              type={notification.type}
-              onClose={() => removeNotification(notification.id)}
-            />
-          ))}
-        </div>
-
-        {/* Location Alert Modal */}
-        {showLocationAlert && (
-          <LocationAlert onClose={() => setShowLocationAlert(false)} />
-        )}
-
-        {/* Search and Directions Modal */}
-        {showSearchDirections && (
-          <SearchAndDirections onClose={() => setShowSearchDirections(false)} />
-        )}
-      </div>
-    </Router>
-  );
-}
-
-function App() {
   return (
     <AuthProvider>
       <ReportProvider>
-        <AppContent />
+        <Router>
+          <div className="App">
+            <Navbar
+              onLocationAlert={handleLocationAlert}
+              onSearchDirections={handleSearchDirections}
+            />
+            <main>
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    <Hero />
+                    <WaterMap />
+                    <Dashboard />
+                    <ReportForm onReportSubmit={addNotification} />
+                    <About />
+                  </>
+                } />
+                <Route path="/map" element={<WaterMap />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/information" element={<Information />} />
+                <Route path="/cleaning-parties" element={<CleaningParties />} />
+                <Route path="/report" element={<ReportForm onReportSubmit={addNotification} />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/firebase-test" element={<FirebaseTest />} />
+                <Route path="/community-events" element={<CommunityEvents />} />
+              </Routes>
+            </main>
+            <Footer />
+
+            {/* Notification Container */}
+            <div className="notification-container">
+              {notifications.map(notification => (
+                <Notification
+                  key={notification.id}
+                  message={notification.message}
+                  type={notification.type}
+                  onClose={() => removeNotification(notification.id)}
+                />
+              ))}
+            </div>
+
+            {/* Location Alert Modal */}
+            {showLocationAlert && (
+              <LocationAlert onClose={() => setShowLocationAlert(false)} />
+            )}
+
+            {/* Search and Directions Modal */}
+            {showSearchDirections && (
+              <SearchAndDirections onClose={() => setShowSearchDirections(false)} />
+            )}
+          </div>
+        </Router>
       </ReportProvider>
     </AuthProvider>
   );
