@@ -15,37 +15,61 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChange(async (user) => {
-      if (user) {
-        setCurrentUser(user);
-        // Get additional user profile data from Firestore
-        try {
-          const profile = await getUserProfile(user.uid);
-          setUserProfile(profile);
-        } catch (error) {
-          console.error('Error getting user profile:', error);
-        }
-      } else {
-        setCurrentUser(null);
-        setUserProfile(null);
+    // Set a timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      if (loading) {
+        console.warn('Firebase auth initialization took too long, proceeding without auth');
+        setLoading(false);
+        setError('Authentication service unavailable');
       }
-      setLoading(false);
-    });
+    }, 5000);
 
-    return unsubscribe;
+    let unsubscribe;
+
+    try {
+      unsubscribe = onAuthStateChange(async (user) => {
+        clearTimeout(loadingTimeout);
+        if (user) {
+          setCurrentUser(user);
+          // Get additional user profile data from Firestore
+          try {
+            const profile = await getUserProfile(user.uid);
+            setUserProfile(profile);
+          } catch (error) {
+            console.error('Error getting user profile:', error);
+          }
+        } else {
+          setCurrentUser(null);
+          setUserProfile(null);
+        }
+        setLoading(false);
+      });
+    } catch (error) {
+      console.error('Firebase initialization error:', error);
+      clearTimeout(loadingTimeout);
+      setLoading(false);
+      setError('Firebase initialization failed');
+    }
+
+    return () => {
+      clearTimeout(loadingTimeout);
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const value = {
     currentUser,
     userProfile,
-    loading
+    loading,
+    error
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
