@@ -14,6 +14,7 @@ import LocationAlert from './components/LocationAlert';
 import SearchAndDirections from './components/SearchAndDirections';
 import Information from './components/Information';
 import CleaningParties from './components/CleaningParties';
+import FirebaseTest from './components/FirebaseTest';
 import './App.css';
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/cleaning-parties" element={<CleaningParties />} />
                 <Route path="/report" element={<ReportForm onReportSubmit={addNotification} />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/firebase-test" element={<FirebaseTest />} />
               </Routes>
             </main>
             <Footer />
