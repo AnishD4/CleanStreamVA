@@ -1,3 +1,9 @@
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
   orderBy,
   limit,
   doc,
@@ -118,7 +124,7 @@ export const updateReportVerification = async (reportId, verificationData) => {
     throw error;
   }
 };
-import {
+
 // Delete a report
 export const deleteReport = async (reportId) => {
   try {
@@ -150,9 +156,3 @@ export const getReportsByStatus = async (status, limitCount = 50) => {
     throw error;
   }
 };
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-
