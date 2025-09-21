@@ -62,7 +62,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <p>&copy; 2025 CleanStream VA. All rights reserved.</p>
           <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
-            Built with React for the Virginia Environmental Hackathon
+            Made by: Atharv Dhore, Srikar Anumolu, Sayuon Biju
           </p>
         </div>
       </div>

@@ -56,7 +56,6 @@ const ReportForm = ({ onReportSubmit }) => {
           default: return 'safe';
         }
       };
-      // Only include optional fields if filled
       const reportData = {
         location: formData.location,
         coords: { lat: position[0], lon: position[1] },
@@ -67,7 +66,6 @@ const ReportForm = ({ onReportSubmit }) => {
       };
       if (formData.smell) reportData.smell = formData.smell;
       if (formData.contact) reportData.contact = formData.contact;
-      // Photo upload is not implemented, so skip
       await addReport(reportData);
       if (onReportSubmit) onReportSubmit('Report submitted!', 'success');
       setFormData({ location: '', waterCondition: '', smell: '', description: '', contact: '' });
@@ -160,7 +158,6 @@ const ReportForm = ({ onReportSubmit }) => {
               name="photo"
               accept="image/*"
               onChange={(e) => {
-                // Handle file upload in a real application
                 console.log('Photo selected:', e.target.files[0]);
               }}
             />

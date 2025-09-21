@@ -80,7 +80,6 @@ const LocationAlert = ({ onClose }) => {
         const location = await locationService.getCurrentLocation();
         setUserLocation(location);
         
-        // Add verified status to water bodies
         const waterBodiesWithStatus = waterBodies.map(waterBody => ({
           ...waterBody,
           status: verifiedStatuses[waterBody.name] || 'safe'
@@ -90,7 +89,7 @@ const LocationAlert = ({ onClose }) => {
           waterBodiesWithStatus,
           location.lat,
           location.lng,
-          15 // 15 mile radius
+          5
         );
         
         setNearbyWaterBodies(nearby);

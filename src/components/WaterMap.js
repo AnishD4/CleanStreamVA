@@ -133,7 +133,6 @@ const WaterMap = () => {
   const [filteredSites, setFilteredSites] = useState(additionalSites);
   const [verifiedLocations, setVerifiedLocations] = useReactState([]);
 
-  // Fetch verified locations from Firestore
   useReactEffect(() => {
     const unsub = onSnapshot(collection(db, 'verifiedLocations'), (snapshot) => {
       setVerifiedLocations(snapshot.docs.map(doc => doc.data()));
@@ -141,11 +140,9 @@ const WaterMap = () => {
     return () => unsub();
   }, []);
 
-  // Filter reports to last 24 hours
   const recentReports = reports.filter(r => Date.now() - r.timestamp <= 24 * 60 * 60 * 1000 && r.coords);
 
   useEffect(() => {
-    // Filter sites by search
     const lowerSearch = search.toLowerCase();
     setFilteredSites(
       additionalSites.filter(site =>
@@ -165,7 +162,6 @@ const WaterMap = () => {
     }).addTo(map);
   }, []);
 
-  // Only show verified locations from the last 24 hours
   const now = Date.now();
   const recentVerifiedLocations = verifiedLocations.filter(loc => {
     // Support both Firestore Timestamp and JS timestamp
@@ -179,7 +175,6 @@ const WaterMap = () => {
     map.eachLayer(layer => {
       if (layer instanceof L.CircleMarker) map.removeLayer(layer);
     });
-    // Show static sites
     filteredSites.forEach(site => {
       const marker = L.circleMarker(site.coords, {
         radius: 12,
@@ -199,7 +194,6 @@ const WaterMap = () => {
         </div>
       `);
     });
-    // Show recent reports
     recentReports.forEach(report => {
       const marker = L.circleMarker([report.coords.lat, report.coords.lon], {
         radius: 14,
@@ -218,7 +212,6 @@ const WaterMap = () => {
         </div>
       `);
     });
-    // Show verified locations as special markers
     recentVerifiedLocations.forEach(loc => {
       if (loc.coords) {
         const marker = L.circleMarker([loc.coords.lat, loc.coords.lon], {
