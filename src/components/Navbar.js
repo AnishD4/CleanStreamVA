@@ -27,6 +27,9 @@ const Navbar = ({ onLocationAlert, onSearchDirections }) => {
           <li><Link to="/information" onClick={closeMenu}>Information</Link></li>
           <li><Link to="/cleaning-parties" onClick={closeMenu}>Community</Link></li>
           <li><Link to="/report" onClick={closeMenu}>Report</Link></li>
+          <li><Link to="/wolfram-insights" onClick={closeMenu} className="wolfram-nav-link">
+            <i className="fas fa-brain"></i> Wolfram Insights
+          </Link></li>
           <li><Link to="/about" onClick={closeMenu}>About</Link></li>
         </ul>
 
