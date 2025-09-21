@@ -83,7 +83,6 @@ function initializeMap() {
         }
     ];
     
-    // Status colors
     const statusColors = {
         safe: '#27ae60',
         caution: '#f39c12',
@@ -91,7 +90,6 @@ function initializeMap() {
         unsafe: '#8e44ad'
     };
     
-    // Status icons
     const statusIcons = {
         safe: 'fas fa-check-circle',
         caution: 'fas fa-exclamation-triangle',
@@ -99,7 +97,6 @@ function initializeMap() {
         unsafe: 'fas fa-times-circle'
     };
     
-    // Add markers for each water body
     waterBodies.forEach(waterBody => {
         const marker = L.circleMarker(waterBody.coords, {
             radius: 12,
@@ -110,7 +107,6 @@ function initializeMap() {
             fillOpacity: 0.8
         }).addTo(map);
         
-        // Add popup with information
         marker.bindPopup(`
             <div style="min-width: 200px;">
                 <h3 style="margin: 0 0 10px 0; color: #2c3e50;">${waterBody.name}</h3>
@@ -122,18 +118,14 @@ function initializeMap() {
             </div>
         `);
         
-        // Add click event to marker
         marker.on('click', function() {
-            // You can add additional functionality here
             console.log(`Clicked on ${waterBody.name}`);
         });
     });
     
-    // Store map reference for later use
     window.waterMap = map;
 }
 
-// Navigation functionality
 function initializeNavigation() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
@@ -143,7 +135,6 @@ function initializeNavigation() {
         navMenu.classList.toggle('active');
     });
     
-    // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', function() {
             hamburger.classList.remove('active');
@@ -151,7 +142,6 @@ function initializeNavigation() {
         });
     });
     
-    // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -166,7 +156,6 @@ function initializeNavigation() {
     });
 }
 
-// Scroll to section function
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -177,14 +166,12 @@ function scrollToSection(sectionId) {
     }
 }
 
-// Report form functionality
 function initializeReportForm() {
     const reportForm = document.getElementById('reportForm');
     
     reportForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get form data
         const formData = new FormData(reportForm);
         const reportData = {
             location: formData.get('location'),
@@ -195,29 +182,17 @@ function initializeReportForm() {
             timestamp: new Date().toISOString()
         };
         
-        // Simulate form submission
         console.log('Report submitted:', reportData);
         
-        // Show success message
         showNotification('Thank you for your report! It has been submitted for review.', 'success');
         
-        // Reset form
         reportForm.reset();
-        
-        // In a real application, you would send this data to a server
-        // fetch('/api/reports', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(reportData)
-        // });
+
     });
 }
 
 // Dashboard updates
 function updateDashboard() {
-    // Simulate real-time updates
     setInterval(function() {
         updateWeatherData();
         updateRecentReports();
@@ -225,12 +200,10 @@ function updateDashboard() {
 }
 
 function updateWeatherData() {
-    // Simulate weather data updates
     const temperature = Math.floor(Math.random() * 10) + 75; // 75-85°F
     const rainfall = (Math.random() * 0.5).toFixed(1); // 0-0.5 inches
     const windSpeed = Math.floor(Math.random() * 10) + 3; // 3-13 mph
     
-    // Update weather display (if elements exist)
     const tempElement = document.querySelector('.weather-item:nth-child(1) span');
     const rainElement = document.querySelector('.weather-item:nth-child(2) span');
     const windElement = document.querySelector('.weather-item:nth-child(3) span');
@@ -239,7 +212,6 @@ function updateWeatherData() {
     if (rainElement) rainElement.textContent = `Rainfall: ${rainfall}" (24h)`;
     if (windElement) windElement.textContent = `Wind: ${windSpeed} mph SW`;
     
-    // Update bloom risk based on conditions
     updateBloomRisk(temperature, rainfall, windSpeed);
 }
 
@@ -249,7 +221,6 @@ function updateBloomRisk(temperature, rainfall, windSpeed) {
     
     if (!riskMeter || !riskText) return;
     
-    // Simple risk calculation based on temperature, rainfall, and wind
     let riskLevel = 'low';
     let riskPercentage = 25;
     
@@ -271,17 +242,14 @@ function updateBloomRisk(temperature, rainfall, windSpeed) {
 }
 
 function updateRecentReports() {
-    // Simulate new reports coming in
     const reportsList = document.querySelector('.reports-list');
     if (!reportsList) return;
     
-    // In a real application, this would fetch new reports from the server
-    // For demo purposes, we'll just add some variety to existing reports
+
     const locations = ['Occoquan Reservoir', 'James River', 'Potomac River', 'Shenandoah River'];
     const conditions = ['Clear water, no visible algae', 'Greenish tint observed', 'Normal conditions', 'Slight discoloration'];
     const statuses = ['safe', 'caution'];
     
-    // Occasionally add a new report (10% chance every update)
     if (Math.random() < 0.1) {
         const newReport = createReportElement(
             locations[Math.floor(Math.random() * locations.length)],
@@ -291,7 +259,6 @@ function updateRecentReports() {
         
         reportsList.insertBefore(newReport, reportsList.firstChild);
         
-        // Keep only the 5 most recent reports
         while (reportsList.children.length > 5) {
             reportsList.removeChild(reportsList.lastChild);
         }
@@ -317,9 +284,7 @@ function createReportElement(location, condition, status) {
     return reportItem;
 }
 
-// Notification system
 function showNotification(message, type = 'info') {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.innerHTML = `
@@ -330,7 +295,6 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     
-    // Add styles
     notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -345,10 +309,8 @@ function showNotification(message, type = 'info') {
         animation: slideIn 0.3s ease;
     `;
     
-    // Add to page
     document.body.appendChild(notification);
     
-    // Auto remove after 5 seconds
     setTimeout(() => {
         if (notification.parentNode) {
             notification.style.animation = 'slideOut 0.3s ease';
@@ -360,7 +322,6 @@ function showNotification(message, type = 'info') {
         }
     }, 5000);
     
-    // Close button functionality
     const closeBtn = notification.querySelector('.notification-close');
     closeBtn.addEventListener('click', () => {
         if (notification.parentNode) {

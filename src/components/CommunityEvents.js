@@ -23,7 +23,6 @@ const CommunityEvents = () => {
     await updateEvent(eventId, { approved: true });
   };
 
-  // Filter logic: show only upcoming/current events unless searching
   const now = new Date();
   const filteredEvents = events.filter(event => {
     const eventDate = event.date ? new Date(event.date) : null;
@@ -33,10 +32,8 @@ const CommunityEvents = () => {
       event.description.toLowerCase().includes(search.toLowerCase())
     );
     if (search) {
-      // If searching, show all matching events (including past)
       return matchesSearch;
     }
-    // Otherwise, show only events today or in the future
     return eventDate && eventDate >= now;
   });
 
