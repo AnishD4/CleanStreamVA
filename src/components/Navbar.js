@@ -22,7 +22,7 @@ const Navbar = ({ onLocationAlert, onSearchDirections }) => {
         
         <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
           <li><Link to="/" onClick={closeMenu}>Home</Link></li>
-          <li><Link to="/map" onClick={closeMenu}>Water Map</Link></li>
+          <li><Link to="/map" onClick={closeMenu}> Map</Link></li>
           <li><Link to="/dashboard" onClick={closeMenu}>Dashboard</Link></li>
           <li><Link to="/information" onClick={closeMenu}>Information</Link></li>
           <li><Link to="/cleaning-parties" onClick={closeMenu}>Community</Link></li>
