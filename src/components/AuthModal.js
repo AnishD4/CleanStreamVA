@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { signInWithEmail, signUpWithEmail, signInAnonymous, resetPassword } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
-import './AuthModal.css';
 
 const AuthModal = ({ isOpen, onClose, mode = 'signin' }) => {
   const [formData, setFormData] = useState({

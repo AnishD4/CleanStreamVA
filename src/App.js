@@ -79,8 +79,6 @@ function App() {
               </Routes>
             </main>
             <Footer />
-
-            {/* Notification Container */}
             <div className="notification-container">
               {notifications.map(notification => (
                 <Notification
@@ -92,12 +90,9 @@ function App() {
               ))}
             </div>
 
-            {/* Location Alert Modal */}
             {showLocationAlert && (
               <LocationAlert onClose={() => setShowLocationAlert(false)} />
             )}
-
-            {/* Search and Directions Modal */}
             {showSearchDirections && (
               <SearchAndDirections onClose={() => setShowSearchDirections(false)} />
             )}
