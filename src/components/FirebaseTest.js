@@ -93,14 +93,7 @@ const FirebaseTest = () => {
       }
 
       // Create a test report
-      const testReportData = {
-        location: 'Test Lake - Firebase Connection Test',
-        status: 'safe',
-        description: 'This is a test report to verify Firebase connection.',
-        reporterName: 'Firebase Test User',
-        reporterEmail: 'test@firebase.test',
-        coordinates: { lat: 38.9072, lng: -77.0369 }
-      };
+
 
       // Test write operation
       const newReport = await addWaterReport(testReportData);
@@ -135,7 +128,6 @@ const FirebaseTest = () => {
   // Test Real-time Updates
   const testRealTime = async () => {
     try {
-      // Import here to avoid issues if not available
       const { subscribeToReports } = await import('../services/firebaseService');
 
       let updateReceived = false;
@@ -143,13 +135,12 @@ const FirebaseTest = () => {
       const unsubscribe = subscribeToReports((reports) => {
         if (reports.length > 0) {
           updateReceived = true;
-          setReports(reports.slice(0, 5)); // Show latest 5
+          setReports(reports.slice(0, 5));
           setTestResults(prev => ({ ...prev, realTime: 'success' }));
-          unsubscribe(); // Clean up
+          unsubscribe();
         }
       });
 
-      // Wait for a moment to see if updates come through
       setTimeout(() => {
         if (!updateReceived) {
           setTestResults(prev => ({ ...prev, realTime: 'timeout - may still work' }));
@@ -174,22 +165,17 @@ const FirebaseTest = () => {
       realTime: 'pending'
     });
 
-    // Test 1: Configuration
     const configOk = testFirebaseConfig();
 
     if (configOk) {
-      // Test 2: Authentication
       const authOk = await testAuthentication();
 
       if (authOk) {
-        // Wait a bit more for auth state to propagate
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // Test 3: Firestore
         const firestoreOk = await testFirestore();
 
         if (firestoreOk) {
-          // Test 4: Real-time
           await testRealTime();
         }
       }
@@ -280,14 +266,14 @@ const FirebaseTest = () => {
 
       {testReport && (
         <div className="test-data">
-          <h4>✅ Test Report Created:</h4>
+          <h4> Test Report Created:</h4>
           <pre>{JSON.stringify(testReport, null, 2)}</pre>
         </div>
       )}
 
       {reports.length > 0 && (
         <div className="test-data">
-          <h4>📊 Recent Reports ({reports.length}):</h4>
+          <h4> Recent Reports ({reports.length}):</h4>
           <div className="reports-list">
             {reports.map((report, index) => (
               <div key={report.id || index} className="report-item">
@@ -300,7 +286,7 @@ const FirebaseTest = () => {
       )}
 
       <div className="test-instructions">
-        <h4>🔧 If Tests Fail:</h4>
+        <h4> If Tests Fail:</h4>
         <ul>
           <li><strong>Configuration fails:</strong> Check your .env file has correct Firebase credentials</li>
           <li><strong>Authentication fails:</strong> Enable Anonymous auth in Firebase Console</li>

@@ -16,7 +16,7 @@ const Information = () => {
       case 'overview':
         return (
           <div className="info-content">
-            <h2>🌊 Water Quality Monitoring in Virginia</h2>
+            <h2> Water Quality Monitoring in Virginia</h2>
             <p>
               Virginia's waterways are vital to our ecosystem, economy, and quality of life. 
               However, they face increasing threats from harmful algal blooms, pollution, and 
@@ -48,7 +48,7 @@ const Information = () => {
             </div>
 
             <div className="highlight-box">
-              <h3>🎯 Our Mission</h3>
+              <h3> Our Mission</h3>
               <p>
                 To protect Virginia's waterways through technology, community engagement, 
                 and real-time monitoring, ensuring safe water for recreation, wildlife, 
@@ -61,7 +61,7 @@ const Information = () => {
       case 'algal-blooms':
         return (
           <div className="info-content">
-            <h2>🌿 Understanding Harmful Algal Blooms (HABs)</h2>
+            <h2> Understanding Harmful Algal Blooms (HABs)</h2>
             
             <div className="info-section">
               <h3>What are Algal Blooms?</h3>
@@ -76,15 +76,15 @@ const Information = () => {
               <h3>Common Types in Virginia</h3>
               <div className="bloom-types">
                 <div className="bloom-type">
-                  <h4>🔵 Blue-Green Algae (Cyanobacteria)</h4>
+                  <h4> Blue-Green Algae (Cyanobacteria)</h4>
                   <p>Most common and potentially toxic. Can cause skin irritation, nausea, and liver damage.</p>
                 </div>
                 <div className="bloom-type">
-                  <h4>🟢 Green Algae</h4>
+                  <h4> Green Algae</h4>
                   <p>Generally less harmful but can indicate nutrient pollution and oxygen depletion.</p>
                 </div>
                 <div className="bloom-type">
-                  <h4>🟡 Golden Algae</h4>
+                  <h4> Golden Algae</h4>
                   <p>Can produce toxins harmful to fish and other aquatic life.</p>
                 </div>
               </div>
@@ -128,7 +128,7 @@ const Information = () => {
       case 'water-safety':
         return (
           <div className="info-content">
-            <h2>🛡️ Water Safety Guidelines</h2>
+            <h2>️ Water Safety Guidelines</h2>
             
             <div className="safety-levels">
               <div className="safety-level safe">
@@ -204,7 +204,7 @@ const Information = () => {
       case 'prevention':
         return (
           <div className="info-content">
-            <h2>🌱 Preventing Water Pollution</h2>
+            <h2> Preventing Water Pollution</h2>
             
             <div className="info-section">
               <h3>What Causes Algal Blooms?</h3>
@@ -236,7 +236,7 @@ const Information = () => {
               <h3>What You Can Do</h3>
               <div className="action-categories">
                 <div className="action-category">
-                  <h4>🏠 At Home</h4>
+                  <h4> At Home</h4>
                   <ul>
                     <li>Use phosphate-free detergents and cleaners</li>
                     <li>Properly dispose of household chemicals</li>
@@ -246,7 +246,7 @@ const Information = () => {
                   </ul>
                 </div>
                 <div className="action-category">
-                  <h4>🌾 In Your Yard</h4>
+                  <h4> In Your Yard</h4>
                   <ul>
                     <li>Use fertilizers sparingly and only when needed</li>
                     <li>Choose native plants that require less water</li>
@@ -256,7 +256,7 @@ const Information = () => {
                   </ul>
                 </div>
                 <div className="action-category">
-                  <h4>🤝 In Your Community</h4>
+                  <h4> In Your Community</h4>
                   <ul>
                     <li>Participate in local clean-up events</li>
                     <li>Support water quality monitoring programs</li>
@@ -269,7 +269,7 @@ const Information = () => {
             </div>
 
             <div className="highlight-box">
-              <h3>💡 Pro Tip</h3>
+              <h3> Pro Tip</h3>
               <p>
                 The best way to prevent algal blooms is to reduce nutrient pollution. 
                 Every small action adds up to make a big difference for Virginia's waterways!
@@ -281,7 +281,7 @@ const Information = () => {
       case 'resources':
         return (
           <div className="info-content">
-            <h2>📚 Additional Resources</h2>
+            <h2> Additional Resources</h2>
             
             <div className="resources-grid">
               <div className="resource-category">
@@ -295,7 +295,7 @@ const Information = () => {
               </div>
 
               <div className="resource-category">
-                <h3>🌊 Environmental Organizations</h3>
+                <h3> Environmental Organizations</h3>
                 <ul>
                   <li><a href="#" target="_blank" rel="noopener noreferrer">Chesapeake Bay Foundation</a></li>
                   <li><a href="#" target="_blank" rel="noopener noreferrer">Virginia Conservation Network</a></li>
@@ -305,7 +305,7 @@ const Information = () => {
               </div>
 
               <div className="resource-category">
-                <h3>📱 Mobile Apps</h3>
+                <h3> Mobile Apps</h3>
                 <ul>
                   <li><a href="#" target="_blank" rel="noopener noreferrer">Cyanobacteria Monitoring App</a></li>
                   <li><a href="#" target="_blank" rel="noopener noreferrer">Water Quality Reporter</a></li>
@@ -315,7 +315,7 @@ const Information = () => {
               </div>
 
               <div className="resource-category">
-                <h3>📖 Educational Materials</h3>
+                <h3> Educational Materials</h3>
                 <ul>
                   <li><a href="#" target="_blank" rel="noopener noreferrer">Understanding Water Quality</a></li>
                   <li><a href="#" target="_blank" rel="noopener noreferrer">Citizen Science Guide</a></li>
@@ -326,7 +326,7 @@ const Information = () => {
             </div>
 
             <div className="info-section">
-              <h3>📞 Emergency Contacts</h3>
+              <h3> Emergency Contacts</h3>
               <div className="emergency-contacts">
                 <div className="contact-item">
                   <strong>Environmental Emergency Hotline:</strong>
@@ -344,7 +344,7 @@ const Information = () => {
             </div>
 
             <div className="highlight-box">
-              <h3>🤝 Get Involved</h3>
+              <h3> Get Involved</h3>
               <p>
                 Join our community of water quality advocates! Participate in clean-up events, 
                 report water conditions, and help protect Virginia's waterways for future generations.
@@ -362,7 +362,7 @@ const Information = () => {
     <section className="information-section">
       <div className="container">
         <div className="information-header">
-          <h1>🌊 Water Quality Information Center</h1>
+          <h1> Water Quality Information Center</h1>
           <p>Learn about water quality, safety, and how to protect Virginia's waterways</p>
         </div>
 

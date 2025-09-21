@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useReports } from '../context/ReportContext';
 import { useEvents } from '../hooks/useEvents';
-import { useNotifications } from '../hooks/useNotifications';
 
 const CleaningParties = () => {
   const { verifiedStatuses } = useReports();
@@ -247,7 +246,7 @@ const CleaningParties = () => {
                         value={newEvent.maxParticipants}
                         onChange={(e) => setNewEvent({...newEvent, maxParticipants: parseInt(e.target.value)})}
                         min="1"
-                        max="100"
+                        max="200"
                       />
                     </div>
                     <div className="form-group">
