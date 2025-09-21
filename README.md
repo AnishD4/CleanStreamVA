@@ -2,7 +2,7 @@
 
 A React-based web application for monitoring water quality and predicting harmful algal blooms across Virginia's waterways.
 
-## 🌊 Features
+## Features
 
 - **Interactive Water Quality Map**: Real-time status of Virginia's major water bodies
 - **Predictive Dashboard**: Weather-based bloom risk assessment and alerts
@@ -10,7 +10,7 @@ A React-based web application for monitoring water quality and predicting harmfu
 - **Mobile Responsive**: Optimized for all devices
 - **Real-time Updates**: Live data simulation and notifications
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -37,7 +37,7 @@ npm start
 
 4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Frontend**: React 18, React Router
 - **Mapping**: Leaflet.js
@@ -45,7 +45,7 @@ npm start
 - **Icons**: Font Awesome
 - **Build Tool**: Create React App
 
-## 📱 Components
+##  Components
 
 - **Navbar**: Responsive navigation with mobile menu
 - **Hero**: Landing section with statistics and call-to-action
@@ -56,7 +56,7 @@ npm start
 - **Footer**: Links and contact information
 - **Notification**: Toast notifications for user feedback
 
-## 🗺️ Water Bodies Monitored
+##  Water Bodies Monitored
 
 - Lake Anna (with North Anna Branch warning)
 - Occoquan Reservoir (PFAS contamination alert)
@@ -69,7 +69,7 @@ npm start
 - Claytor Lake
 - Lake Gaston
 
-## 🎯 Key Features
+##  Key Features
 
 ### Water Quality Status
 - **Safe**: Green indicators for healthy water
@@ -102,7 +102,7 @@ npm start
 - Satellite imagery (simulated)
 - Citizen reports and observations
 
-## 🌍 Impact
+##  Impact
 
 - Protects nearly 1 million people
 - Monitors 47+ water bodies
@@ -110,30 +110,22 @@ npm start
 - Supports recreational users
 - Assists local governments
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+##  Contact
 
-## 📞 Contact
+- Website: [CleanStream VA](https://hack-the-nest.vercel.app)
 
-- Email: contact@cleanstreamva.org
-- Phone: (555) 123-4567
-- Website: [CleanStream VA](https://cleanstreamva.org)
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Virginia Department of Environmental Quality
 - Virginia Department of Health
 - OpenStreetMap contributors
 - React and Leaflet.js communities
 
----
-
-Built with ❤️ for Virginia's waterways
