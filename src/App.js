@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ReportProvider } from './context/ReportContext';
@@ -16,7 +16,8 @@ import Information from './components/Information';
 import CleaningParties from './components/CleaningParties';
 import FirebaseTest from './components/FirebaseTest';
 import CommunityEvents from './components/CommunityEvents';
-import VerifiedLocationsTable from './components/VerifiedLocationsTable';
+import ImpactShowcase from './components/ImpactShowcase';
+import WolframInsights from './components/WolframInsights';
 import './App.css';
 
 function App() {
@@ -61,11 +62,7 @@ function App() {
                 <Route path="/" element={
                   <>
                     <Hero />
-                    <WaterMap />
-                    <Dashboard />
-                    <ReportForm onReportSubmit={addNotification} />
-                    <About />
-                    <VerifiedLocationsTable />
+                    <WolframInsights />
                   </>
                 } />
                 <Route path="/map" element={<WaterMap />} />
@@ -76,6 +73,8 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/firebase-test" element={<FirebaseTest />} />
                 <Route path="/community-events" element={<CommunityEvents />} />
+                <Route path="/impact-showcase" element={<ImpactShowcase />} />
+                <Route path="/wolfram-insights" element={<WolframInsights />} />
               </Routes>
             </main>
             <Footer />
