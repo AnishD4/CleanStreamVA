@@ -11,11 +11,11 @@ const Footer = () => {
             <p>Protecting Virginia's waterways through technology and community engagement.</p>
             <div style={{ marginTop: '1rem' }}>
               <i className="fas fa-envelope" style={{ marginRight: '10px' }}></i>
-              <span>contact@cleanstreamva.org</span>
+              <span>anish.dhore@gmail.com</span>
             </div>
             <div style={{ marginTop: '0.5rem' }}>
               <i className="fas fa-phone" style={{ marginRight: '10px' }}></i>
-              <span>(555) 123-4567</span>
+              <span>703-814-2433</span>
             </div>
           </div>
           
