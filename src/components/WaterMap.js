@@ -165,6 +165,14 @@ const WaterMap = () => {
     }).addTo(map);
   }, []);
 
+  // Only show verified locations from the last 24 hours
+  const now = Date.now();
+  const recentVerifiedLocations = verifiedLocations.filter(loc => {
+    // Support both Firestore Timestamp and JS timestamp
+    const verifiedAt = loc.verifiedAt && loc.verifiedAt.seconds ? loc.verifiedAt.seconds * 1000 : loc.verifiedAt;
+    return verifiedAt && (now - verifiedAt <= 24 * 60 * 60 * 1000);
+  });
+
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     const map = mapInstanceRef.current;
@@ -211,12 +219,12 @@ const WaterMap = () => {
       `);
     });
     // Show verified locations as special markers
-    verifiedLocations.forEach(loc => {
+    recentVerifiedLocations.forEach(loc => {
       if (loc.coords) {
         const marker = L.circleMarker([loc.coords.lat, loc.coords.lon], {
           radius: 16,
-          fillColor: '#2c3e50', // dark blue for verified
-          color: '#fff',
+          fillColor: statusColors[loc.status] || '#2c3e50',
+          color: '#000', // black outline
           weight: 3,
           opacity: 1,
           fillOpacity: 1
@@ -224,13 +232,13 @@ const WaterMap = () => {
         marker.bindPopup(`
           <div style="min-width: 220px;">
             <h3 style="margin: 0 0 10px 0; color: #2c3e50;">${loc.location} (Verified)</h3>
-            <div>Status: <span style="color: #2c3e50; font-weight: bold;">${loc.status}</span></div>
-            <div>Verified: ${new Date(loc.verifiedAt).toLocaleString()}</div>
+            <div>Status: <span style="color: ${statusColors[loc.status] || '#2c3e50'}; font-weight: bold;">${loc.status}</span></div>
+            <div>Verified: ${loc.verifiedAt ? new Date(loc.verifiedAt.seconds ? loc.verifiedAt.seconds * 1000 : loc.verifiedAt).toLocaleString() : ''}</div>
           </div>
         `);
       }
     });
-  }, [filteredSites, reports, verifiedLocations]);
+  }, [filteredSites, reports, recentVerifiedLocations]);
 
   return (
     <section className="map-section">

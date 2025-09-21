@@ -76,30 +76,19 @@ const Dashboard = () => {
           <div className="dashboard-card">
             <h3>Current Alerts</h3>
             <div className="alert-list">
-              <div className="alert-item warning">
-                <i className="fas fa-exclamation-triangle"></i>
-                <div>
-                  <strong>Lake Anna - North Anna Branch</strong>
-                  <p>Elevated algae levels detected. Avoid swimming.</p>
+              {/* Removed hardcoded/test alerts. Optionally, show dynamic alerts here based on real report data. */}
+              {reports.filter(r => r.status === 'warning' || r.status === 'unsafe').slice(0, 5).map(report => (
+                <div key={report.id} className={`alert-item ${report.status}`}>
+                  <i className={report.status === 'warning' ? 'fas fa-exclamation-triangle' : 'fas fa-times-circle'}></i>
+                  <div>
+                    <strong>{report.location}</strong>
+                    <p>{report.description || report.waterCondition}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="alert-item caution">
-                <i className="fas fa-info-circle"></i>
-                <div>
-                  <strong>James River - Richmond Area</strong>
-                  <p>Moderate risk of algal bloom. Monitor conditions.</p>
-                </div>
-              </div>
-              <div className="alert-item info">
-                <i className="fas fa-check-circle"></i>
-                <div>
-                  <strong>Shenandoah River</strong>
-                  <p>Water conditions normal. Safe for recreation.</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-          
+
           <div className="dashboard-card">
             <h3>Recent Reports</h3>
             <div className="reports-list">

@@ -2238,3 +2238,64 @@ main {
     padding: 1.5rem;
   }
 }
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+  margin-bottom: 32px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn:hover {
+  background: linear-gradient(90deg, #4facfe 0%, #f093fb 100%);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+input, select, textarea {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #764ba2;
+}
+
+.event-card {
+  transition: box-shadow 0.2s;
+}
+.event-card:hover {
+  box-shadow: 0 4px 16px rgba(76, 175, 254, 0.15);
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 16px 8px;
+    max-width: 100%;
+  }
+  .btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1.1rem;
+  }
+}
